@@ -33,6 +33,14 @@ class Settings(BaseSettings):
 
     # CORS
     frontend_url: str = "http://localhost:3000"
+    frontend_urls: str = "http://localhost:3000," "http://localhost:3001," "http://localhost:3002"
+
+    @property
+    def allowed_origins(self) -> list[str]:
+        urls = [u.strip() for u in self.frontend_urls.split(",") if u.strip()]
+        if self.frontend_url and self.frontend_url not in urls:
+            urls.append(self.frontend_url)
+        return urls
 
 
 settings = Settings()

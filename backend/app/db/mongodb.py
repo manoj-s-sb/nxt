@@ -1,7 +1,7 @@
 """MongoDB connection lifecycle using Motor + Beanie."""
 
 import logging
-from typing import Sequence, Type
+from collections.abc import Sequence
 
 from beanie import Document, init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -18,7 +18,7 @@ class MongoState:
 state = MongoState()
 
 
-async def connect_to_mongo(document_models: Sequence[Type[Document]]) -> None:
+async def connect_to_mongo(document_models: Sequence[type[Document]]) -> None:
     """Open Motor client and register Beanie document models."""
     logger.info("Connecting to MongoDB at %s", settings.mongodb_uri)
     state.client = AsyncIOMotorClient(settings.mongodb_uri)

@@ -23,11 +23,11 @@ async def get_current_user(
 
     try:
         user_id = PydanticObjectId(payload["sub"])
-    except (TypeError, ValueError):
+    except (TypeError, ValueError) as err:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Malformed token subject",
-        )
+        ) from err
 
     user = await User.get(user_id)
     if user is None:

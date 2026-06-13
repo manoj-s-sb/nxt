@@ -28,11 +28,11 @@ def _to_user_out(user: User) -> UserOut:
 async def register(payload: UserRegister) -> UserOut:
     try:
         user = await auth_service.register_user(payload.email, payload.password)
-    except EmailAlreadyRegisteredError:
+    except EmailAlreadyRegisteredError as err:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Email already registered",
-        )
+        ) from err
     return _to_user_out(user)
 
 

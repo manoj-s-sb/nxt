@@ -1,6 +1,6 @@
 """Password hashing (bcrypt) and JWT token creation/verification."""
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from jose import JWTError, jwt
@@ -23,9 +23,7 @@ def create_access_token(
     subject: str,
     expires_minutes: int | None = None,
 ) -> str:
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=expires_minutes or settings.jwt_expire_minutes
-    )
+    expire = datetime.now(UTC) + timedelta(minutes=expires_minutes or settings.jwt_expire_minutes)
     payload: dict[str, Any] = {"sub": subject, "exp": expire}
     return jwt.encode(
         payload,
